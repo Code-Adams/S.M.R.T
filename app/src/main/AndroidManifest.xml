@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.bhat.av">
+
+    <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES"/>
+
+<!--    This query is here specially for android 11 and above as package names are not as such visible there-->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN"/>
+        </intent>
+    </queries>
 
     <application
         android:allowBackup="true"
