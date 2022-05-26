@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.bhat.av"
-        minSdkVersion 21
+        minSdkVersion 28
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -39,4 +39,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     //Shimmer animation visit "https://facebook.github.io/shimmer-android/" for more info
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
+    //Biometric
+    implementation 'androidx.biometric:biometric:1.0.1'
 }

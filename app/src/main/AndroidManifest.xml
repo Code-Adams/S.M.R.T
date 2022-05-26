@@ -3,12 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.bhat.av">
 
-    <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES"/>
-
-<!--    This query is here specially for android 11 and above as package names are not as such visible there-->
+    <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" /> <!-- This query is here specially for android 11 and above as package names are not as such visible there -->
     <queries>
         <intent>
-            <action android:name="android.intent.action.MAIN"/>
+            <action android:name="android.intent.action.MAIN" />
         </intent>
     </queries>
 
@@ -19,13 +17,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
-        <activity android:name=".MainActivity">
+        <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".AppListFilterActivity"></activity>
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

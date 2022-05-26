@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">My Application</string>
     <string name="no_app_found">No App found</string>
+    <string name="filter">Filter</string>
+    <string name="all_apps">All Apps(Excluding trusted system apps)</string>
+    <string name="low_risk">Low Risk</string>
+    <string name="high_risk">High Risk</string>
+    <string name="extreme_risk">Extreme Risk</string>
+    <string name="please_select_one_of_the_following_categories_to_filter_your_apps_accordingly">Please select one of the following categories to filter your apps accordingly:</string>
 </resources>

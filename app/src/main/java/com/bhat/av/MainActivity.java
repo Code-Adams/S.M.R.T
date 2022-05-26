@@ -1,5 +1,6 @@
 package com.bhat.av;
 
+import java.util.ArrayList;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,12 +15,15 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -29,13 +33,14 @@ public class MainActivity extends AppCompatActivity {
 
     List<AppData> appDataList= new ArrayList<>();
     private ArrayAdapter<String> adapter;
-
     private RecyclerView appListRecycler;
     private AppListAdapterClass appListAdapterObj;
     private LinearLayout noAppFound;
     private ShimmerFrameLayout shimmerFrameLayout;
+    private ArrayList<String>  levelOne, levelTwo, levelThree;
+    private FloatingActionButton floatingActionButton;
 
-    TextView tv;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,16 +54,32 @@ public class MainActivity extends AppCompatActivity {
 
         initialise();
         getAndSetAppData();
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AppListFilterActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     private void initialise() {
 
+        floatingActionButton= findViewById(R.id.foab);
         appListRecycler = findViewById(R.id.appListRecycler);
         noAppFound = findViewById(R.id.noAppFound);
         shimmerFrameLayout =findViewById(R.id.shimmer_view_container);
         //Start the shimmer
         shimmerFrameLayout.setVisibility(View.VISIBLE);
-        tv=findViewById(R.id.xxl);
+
+        String[] levelOneStr = getResources().getStringArray(R.array.levelOne);
+        String[] levelTwoStr = getResources().getStringArray(R.array.levelTwo);
+        String[] levelThreeStr = getResources().getStringArray(R.array.levelThree);
+        //Initialise threat app list
+        levelOne = new ArrayList<String>(Arrays.asList(levelOneStr));
+        levelTwo = new ArrayList<String>(Arrays.asList(levelTwoStr));
+        levelThree = new ArrayList<String>(Arrays.asList(levelThreeStr));
 
     }
 
@@ -77,6 +98,10 @@ public class MainActivity extends AppCompatActivity {
 //
 //        }
 
+        //Getting filter choice from intent
+        Intent intent= getIntent();
+        String filter = intent.getStringExtra("filter");
+
         //Initializing the package manager object
         PackageManager packageManager = getPackageManager();
 
@@ -94,16 +119,31 @@ public class MainActivity extends AppCompatActivity {
                 data.setAppName(info.loadLabel(packageManager).toString());
                 data.setPackageName(info.packageName);
                 data.setLogo(info.loadIcon(packageManager));
-
-                appDataList.add(data);
+                if(filter.equals("0"))
+                    appDataList.add(data);
+                else if(filter.equals("1") && levelOne.contains(data.getAppName()))
+                    appDataList.add(data);
+                else if (filter.equals("2") && levelTwo.contains(data.getAppName()))
+                    appDataList.add(data);
+                else if (filter.equals("3") && levelThree.contains(data.getAppName()))
+                    appDataList.add(data);
+                else
+                    System.out.println("nice");
             }
         }
+        if(!appDataList.isEmpty()) {
+            appListRecycler.setVisibility(View.VISIBLE);
+            appListAdapterObj = new AppListAdapterClass(MainActivity.this, MainActivity.this, appDataList);
+            appListRecycler.setLayoutManager(new LinearLayoutManager(MainActivity.this, RecyclerView.VERTICAL, false));
+            appListRecycler.setAdapter(appListAdapterObj);
+            shimmerFrameLayout.stopShimmer();
+            shimmerFrameLayout.setVisibility(View.GONE);
+        }else {
+            appListRecycler.setVisibility(View.GONE);
+            shimmerFrameLayout.setVisibility(View.GONE);
+            noAppFound.setVisibility(View.VISIBLE);
 
-        appListAdapterObj = new AppListAdapterClass(MainActivity.this,MainActivity.this,appDataList);
-        appListRecycler.setLayoutManager(new LinearLayoutManager(MainActivity.this,RecyclerView.VERTICAL,false));
-        appListRecycler.setAdapter(appListAdapterObj);
-        shimmerFrameLayout.stopShimmer();
-        shimmerFrameLayout.setVisibility(View.GONE);
+        }
     }
 
     @Override

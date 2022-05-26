@@ -42,28 +42,30 @@ public class AppListAdapterClass extends RecyclerView.Adapter<AppListAdapterClas
     public void onBindViewHolder(@NonNull  AppListAdapterClass.AppListViewAdapter holder, int position) {
 
         final AppData appData= appDataList.get(position);
-        holder.appNameTv.setText(appData.getAppName());
-        holder.appIcon.setImageDrawable(appData.getLogo());
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, appData.getAppName(), Toast.LENGTH_SHORT).show();
-                Intent deleteAppIntent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE);
-                deleteAppIntent.setData(Uri.parse("package:" + appData.getPackageName()));
-                deleteAppIntent.putExtra(Intent.EXTRA_RETURN_RESULT,true);
-                activity.startActivityForResult(deleteAppIntent,100);
-            }
-        });
-        holder.deleteApp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent deleteAppIntent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE);
-                deleteAppIntent.setData(Uri.parse("package:" + appData.getPackageName()));
-                deleteAppIntent.putExtra(Intent.EXTRA_RETURN_RESULT,true);
-                activity.startActivityForResult(deleteAppIntent,100);
-            }
-        });
+            holder.appNameTv.setText(appData.getAppName());
+            holder.appIcon.setImageDrawable(appData.getLogo());
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, appData.getAppName(), Toast.LENGTH_SHORT).show();
+                    Intent deleteAppIntent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE);
+                    deleteAppIntent.setData(Uri.parse("package:" + appData.getPackageName()));
+                    deleteAppIntent.putExtra(Intent.EXTRA_RETURN_RESULT,true);
+                    activity.startActivityForResult(deleteAppIntent,100);
+                }
+            });
+            holder.deleteApp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent deleteAppIntent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE);
+                    deleteAppIntent.setData(Uri.parse("package:" + appData.getPackageName()));
+                    deleteAppIntent.putExtra(Intent.EXTRA_RETURN_RESULT,true);
+                    activity.startActivityForResult(deleteAppIntent,100);
+                }
+            });
+
 
 
     }
