@@ -17,18 +17,21 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
-public class AppListAdapterClass extends RecyclerView.Adapter<AppListAdapterClass.AppListViewAdapter> {
+public class AppListAdapterClass extends RecyclerView.Adapter<AppListAdapterClass.AppListViewAdapter> implements Filterable{
 
     private Context context;
     private Activity activity;
-    private List<AppData> appDataList;//
+    private List<AppData> appDataList, filterAppliedList;//
 
-    public AppListAdapterClass(Activity activity,Context context, List<AppData> appDataList) {
+    public AppListAdapterClass(Activity activity,Context context, List<AppData> list) {
         this.context = context;
         this.activity=activity;
-        this.appDataList = new ArrayList<AppData>(appDataList);
+        this.filterAppliedList = list;
+        this.appDataList = new ArrayList<AppData>(list);
     }
 
     @NonNull
@@ -41,7 +44,7 @@ public class AppListAdapterClass extends RecyclerView.Adapter<AppListAdapterClas
     @Override
     public void onBindViewHolder(@NonNull  AppListAdapterClass.AppListViewAdapter holder, int position) {
 
-        final AppData appData= appDataList.get(position);
+        final AppData appData= filterAppliedList.get(position);
 
             holder.appNameTv.setText(appData.getAppName());
             holder.appIcon.setImageDrawable(appData.getLogo());
@@ -72,9 +75,44 @@ public class AppListAdapterClass extends RecyclerView.Adapter<AppListAdapterClas
 
     @Override
     public int getItemCount() {
-        return appDataList.size();
+        return filterAppliedList.size();
     }
 
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+    Filter filter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+
+            List<AppData> filteredList = new ArrayList<>();
+            if(String.valueOf(constraint).isEmpty()){
+                filteredList.addAll(appDataList);
+            }else{
+                for(AppData appData : appDataList){
+                    if(appData.getAppName().toLowerCase().contains(String.valueOf(constraint).toLowerCase())){
+                        filteredList.add(appData);
+                    }
+                }
+            }
+
+            FilterResults filterResults = new FilterResults();
+            filterResults.values= filteredList;
+
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+
+            filterAppliedList.clear();
+
+            filterAppliedList.addAll((Collection<? extends AppData>) results.values);
+            notifyDataSetChanged();
+
+        }
+    };
 
     public class AppListViewAdapter extends RecyclerView.ViewHolder {
 
@@ -88,4 +126,5 @@ public class AppListAdapterClass extends RecyclerView.Adapter<AppListAdapterClas
             deleteApp=itemView.findViewById(R.id.deleteApp);
         }
     }
+
 }

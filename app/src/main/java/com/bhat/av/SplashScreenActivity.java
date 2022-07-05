@@ -42,7 +42,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         //initialize all variables
         initialize();
-        //Check Biometric available
+       // Check Biometric available
         hasBiometric();
 
     }

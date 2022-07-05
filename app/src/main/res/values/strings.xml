@@ -7,4 +7,5 @@
     <string name="high_risk">High Risk</string>
     <string name="extreme_risk">Extreme Risk</string>
     <string name="please_select_one_of_the_following_categories_to_filter_your_apps_accordingly">Please select one of the following categories to filter your apps accordingly:</string>
+    <string name="search">Search</string>
 </resources>
